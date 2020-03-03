@@ -15,7 +15,5 @@ void main(){
       ),
     ),
   );  
-  CategorieDataService.getAll().then(
-    (list) => debugPrint(list.toString())
-  );
+
 }

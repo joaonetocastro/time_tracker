@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 Future<Database> createDatabase(){
   return getDatabasesPath().then((dbPath){
-    final String path = join(dbPath, 'routine_tracker.db');
+    final String path = join(dbPath, 'time_tracker.db');
     return openDatabase(path, onCreate: (db, version){
       db.execute('CREATE TABLE categories('
                   'id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -16,6 +16,7 @@ Future<Database> createDatabase(){
                 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
                 'time_in_minutes INTEGER,'
                 'categorie_id INTEGER,'
+                'date_time text,'
                 'CONSTRAINT fk_time_focused'
                 ' FOREIGN KEY(categorie_id)'
                 ' REFERENCES categories(id))'

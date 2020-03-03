@@ -5,6 +5,8 @@ import 'package:time_tracker/components/center_text.dart';
 import 'package:time_tracker/components/circled_icon_button.dart';
 import 'package:time_tracker/helpers/dialogs_helper.dart';
 import 'package:time_tracker/models/categorie.dart';
+import 'package:time_tracker/models/time_focused.dart';
+import 'package:time_tracker/services/time_focused_data_service.dart';
 
 class TimingCircle extends StatefulWidget with ChangeNotifier{
   int _totalTimeInSeconds;
@@ -35,6 +37,7 @@ class TimingCircle extends StatefulWidget with ChangeNotifier{
 }
 
 class _TimingCircleState extends State<TimingCircle> {
+  Categorie _categorie;
   int _timeElapsed = 0;
   bool _running = false;
 
@@ -59,15 +62,26 @@ class _TimingCircleState extends State<TimingCircle> {
   }
   
   void startRunning(Categorie categorie){
+    _categorie = categorie;
     _running = true;
     _countOneSecond();
   }
   void stopRunning(){
+    TimeFocusedDataService.add(
+      TimeFocused(
+        this._categorie.id, 
+        timeElapsedInMinutes
+      )
+    );
+    TimeFocusedDataService.getAll().then((timeFocusedList){
+      debugPrint(timeFocusedList.toString());
+    });
     setState((){
       _timeElapsed = 0;
       _running = false;
     });
   }
+  
   void _countOneSecond(){
     setState(() {
         if(isRunning && _timeElapsed < widget._totalTimeInSeconds){
@@ -76,8 +90,7 @@ class _TimingCircleState extends State<TimingCircle> {
               _countOneSecond();
           });
         }else{
-         _timeElapsed = 0;
-         widget.stopRunning();
+         stopRunning();
         }
     });
   }
