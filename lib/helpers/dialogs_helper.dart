@@ -87,7 +87,7 @@ Future<Categorie> showAddCategoriesDialog(BuildContext context, startTimer) asyn
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('What are you goeing to focus on?'),
+        title: Text('What are you going to focus on?'),
         content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
