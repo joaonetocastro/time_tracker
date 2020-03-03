@@ -1,37 +1,37 @@
 import 'package:time_tracker/database/app_database.dart';
-import 'package:time_tracker/models/categorie.dart';
+import 'package:time_tracker/models/category.dart';
 
-class CategorieDataService {
-  static Future<int> add(Categorie categorie){
+class CategoryDataService {
+  static Future<int> add(Category category){
     return createDatabase().then((db){
-      return db.insert('categories', categorie.convertToMap());
+      return db.insert('categories', category.convertToMap());
     });
   }
 
-  static Future<List<Categorie>> getAll(){
+  static Future<List<Category>> getAll(){
     return createDatabase().then((db){
       return db.query('categories').then((mapData){
-        final List<Categorie> categories = List();
+        final List<Category> categories = List();
         for(Map<String, dynamic> map in mapData){
-          final Categorie categorie = Categorie.withID(
+          final Category category = Category.withID(
             map['name'],
             map['id'],
           );
-          categories.add(categorie);
+          categories.add(category);
         }
         return categories;
       });
     });
   }
-  static Future<Categorie> find(id){
+  static Future<Category> find(id){
     return createDatabase().then((db){
       return db.query('categories where id=${id}').then((listMapData){
-        Map<String, dynamic> categorieData = listMapData[0];
-        final Categorie categorie = Categorie.withID(
-          categorieData['name'],
-          categorieData['id'],
+        Map<String, dynamic> categoryData = listMapData[0];
+        final Category category = Category.withID(
+          categoryData['name'],
+          categoryData['id'],
         );
-        return categorie;
+        return category;
       });
     });
   }

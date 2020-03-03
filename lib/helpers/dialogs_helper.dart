@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:time_tracker/models/categorie.dart';
-import 'package:time_tracker/services/categorie_data_service.dart';
+import 'package:time_tracker/models/category.dart';
+import 'package:time_tracker/services/category_data_service.dart';
 
-Future<Categorie> showChooseCategoriesDialog(BuildContext context, startTimer) async{
-  void _exitDialog(context, categorie){
-    if(categorie != null) startTimer(categorie);
+Future<Category> showChooseCategoriesDialog(BuildContext context, startTimer) async{
+  void _exitDialog(context, category){
+    if(category != null) startTimer(category);
     Navigator.of(context).pop();
   }
   
-  return showDialog<Categorie>(
+  return showDialog<Category>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
@@ -18,8 +18,8 @@ Future<Categorie> showChooseCategoriesDialog(BuildContext context, startTimer) a
           padding: const EdgeInsets.all(8.0),
           child: Container(
             height: 130.0,
-            child: FutureBuilder<List<Categorie>>(
-                future: CategorieDataService.getAll(),
+            child: FutureBuilder<List<Category>>(
+                future: CategoryDataService.getAll(),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
                   if(snapshot.hasData){
                     List gridArray = arrayToGridArray(snapshot.data);
@@ -28,18 +28,18 @@ Future<Categorie> showChooseCategoriesDialog(BuildContext context, startTimer) a
                     children: <Widget>[
                       for(var row in gridArray)
                         Row(children: <Widget>[
-                          for(var categorie in row)  
+                          for(var category in row)  
                             FlatButton(
-                              child: Text(categorie.name),
+                              child: Text(category.name),
                               color: Colors.amber,
                               onPressed: (){
-                                // return categorie;
-                                _exitDialog(context, categorie);
+                                // return category;
+                                _exitDialog(context, category);
                               },
                               onLongPress: (){
-                                debugPrint("This is my categorie ${categorie.toString()}");
+                                debugPrint("This is my category ${category.toString()}");
                                 _exitDialog(context, null);
-                                confirmDeleteCategorie(context, categorie);
+                                confirmDeleteCategory(context, category);
                               },
                             ),
                           ],
@@ -56,11 +56,11 @@ Future<Categorie> showChooseCategoriesDialog(BuildContext context, startTimer) a
           ),
                         actions: <Widget>[
                           FlatButton(
-                            child: Text("Add new Categorie"),
+                            child: Text("Add new Category"),
                             color: Colors.blueAccent,
                             onPressed: (){
                               _exitDialog(context, null);
-                              showAddCategoriesDialog(context, startTimer);
+                              showAddCategorysDialog(context, startTimer);
                             },
                           ),FlatButton(
                             child: Text("Cancel"),
@@ -74,15 +74,15 @@ Future<Categorie> showChooseCategoriesDialog(BuildContext context, startTimer) a
         }, 
       );
     }
-Future<Categorie> showAddCategoriesDialog(BuildContext context, startTimer) async{
+Future<Category> showAddCategorysDialog(BuildContext context, startTimer) async{
   final nameController = TextEditingController();
   
-  void _exitDialog(context, categorie){
-    // startTimer(categorie);
+  void _exitDialog(context, category){
+    // startTimer(category);
     Navigator.of(context).pop();
   }
   
-  return showDialog<Categorie>(
+  return showDialog<Category>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
@@ -95,7 +95,7 @@ Future<Categorie> showAddCategoriesDialog(BuildContext context, startTimer) asyn
             child: TextField(
               controller: nameController,
               decoration: InputDecoration(
-                hintText: 'What\'s the new categorie?'
+                hintText: 'What\'s the new category?'
               ),
             ),
           ),
@@ -106,11 +106,11 @@ Future<Categorie> showAddCategoriesDialog(BuildContext context, startTimer) asyn
                             color: Colors.blueAccent,
                             onPressed: () async{
                               _exitDialog(context, null);
-                              String categorieName = nameController.text;
-                              Categorie categorie = Categorie(categorieName);
-                              int categorie_id = await CategorieDataService.add(categorie);
-                              categorie = await CategorieDataService.find(categorie_id);
-                              startTimer(categorie);
+                              String categoryName = nameController.text;
+                              Category category = Category(categoryName);
+                              int category_id = await CategoryDataService.add(category);
+                              category = await CategoryDataService.find(category_id);
+                              startTimer(category);
                             },
                           ),
                           FlatButton(
@@ -125,10 +125,10 @@ Future<Categorie> showAddCategoriesDialog(BuildContext context, startTimer) asyn
         }, 
       );
     }
-Future<Categorie> confirmDeleteCategorie(BuildContext context, categorie) async{
+Future<Category> confirmDeleteCategory(BuildContext context, category) async{
   void _exitDialog(context, wantsToDelete){
     if(wantsToDelete){
-      CategorieDataService.delete(categorie.id);
+      CategoryDataService.delete(category.id);
     }
     Navigator.of(context).pop();
   }
@@ -138,7 +138,7 @@ Future<Categorie> confirmDeleteCategorie(BuildContext context, categorie) async{
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Are you sure you want to delete the categorie ${categorie.name}?'),
+        title: Text('Are you sure you want to delete the category ${category.name}?'),
         content: Container(
           height: 10
         ),

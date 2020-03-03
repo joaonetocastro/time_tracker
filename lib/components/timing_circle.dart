@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:time_tracker/components/center_text.dart';
 import 'package:time_tracker/components/circled_icon_button.dart';
 import 'package:time_tracker/helpers/dialogs_helper.dart';
-import 'package:time_tracker/models/categorie.dart';
+import 'package:time_tracker/models/category.dart';
 import 'package:time_tracker/models/time_focused.dart';
 import 'package:time_tracker/services/time_focused_data_service.dart';
 
@@ -22,9 +22,9 @@ class TimingCircle extends StatefulWidget with ChangeNotifier{
   _TimingCircle_State createState() => _state;
   
 
-  void startRunning(Categorie categorie){
+  void startRunning(Category category){
     if(!isRunning){
-      _state.startRunning(categorie);
+      _state.startRunning(category);
     } 
     notifyListeners();
   }
@@ -37,7 +37,7 @@ class TimingCircle extends StatefulWidget with ChangeNotifier{
 }
 
 class _TimingCircle_State extends State<TimingCircle> {
-  Categorie _categorie;
+  Category _category;
   int _timeElapsed = 0;
   bool _running = false;
 
@@ -61,15 +61,15 @@ class _TimingCircle_State extends State<TimingCircle> {
     return _timeElapsed ~/ 60;
   }
   
-  void startRunning(Categorie categorie){
-    _categorie = categorie;
+  void startRunning(Category category){
+    _category = category;
     _running = true;
     _countOneSecond();
   }
   void stopRunning(){
     TimeFocusedDataService.add(
       TimeFocused(
-        this._categorie.id, 
+        this._category.id, 
         timeElapsedInMinutes
       )
     );
