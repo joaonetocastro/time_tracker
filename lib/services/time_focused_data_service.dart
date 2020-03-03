@@ -1,5 +1,7 @@
 import 'package:time_tracker/database/app_database.dart';
+import 'package:time_tracker/models/categorie.dart';
 import 'package:time_tracker/models/time_focused.dart';
+import 'package:time_tracker/services/categorie_data_service.dart';
 
 class TimeFocusedDataService{
   static Future<int> add(TimeFocused timeFocused){
@@ -48,5 +50,16 @@ class TimeFocusedDataService{
       totalTimeInMinutes = totalTimeInMinutes + timeFocused.timeInMinutes;
     }
     return totalTimeInMinutes;
+  }
+  static Future<Map<String,double>> timeSpentTodayByCategory() async{
+    List<Categorie> categorieList = await CategorieDataService.getAll();
+
+    Map<String, double> dataMap = new Map();
+    for(Categorie categorie in categorieList){
+      int timeSpent = await timeSpentTodayInCategorie(categorie.id);
+      dataMap.putIfAbsent(categorie.name, () => timeSpent.toDouble());
+    }
+    return dataMap;
+
   }
 }

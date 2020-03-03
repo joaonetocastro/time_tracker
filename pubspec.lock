@@ -116,6 +116,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  pie_chart:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: b7d45d057cc6469fa89fda9e188bef4dfd2427b2
+      url: "https://github.com/apgapg/pie_chart.git"
+    source: git
+    version: "3.1.1"
   quiver:
     dependency: transitive
     description:

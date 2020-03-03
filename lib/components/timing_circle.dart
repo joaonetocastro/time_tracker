@@ -12,14 +12,14 @@ class TimingCircle extends StatefulWidget with ChangeNotifier{
   int _totalTimeInSeconds;
   double _size = 250.0;
   bool get isRunning => _state.isRunning;
-  _TimingCircleState _state = _TimingCircleState();
+  _TimingCircle_State _state = _TimingCircle_State();
 
   TimingCircle({int timeInMinutes = 25}){
     this._totalTimeInSeconds = timeInMinutes*60;
   }
 
   @override
-  _TimingCircleState createState() => _state;
+  _TimingCircle_State createState() => _state;
   
 
   void startRunning(Categorie categorie){
@@ -36,7 +36,7 @@ class TimingCircle extends StatefulWidget with ChangeNotifier{
   }
 }
 
-class _TimingCircleState extends State<TimingCircle> {
+class _TimingCircle_State extends State<TimingCircle> {
   Categorie _categorie;
   int _timeElapsed = 0;
   bool _running = false;
@@ -73,9 +73,6 @@ class _TimingCircleState extends State<TimingCircle> {
         timeElapsedInMinutes
       )
     );
-    TimeFocusedDataService.getAll().then((timeFocusedList){
-      debugPrint(timeFocusedList.toString());
-    });
     setState((){
       _timeElapsed = 0;
       _running = false;
@@ -112,7 +109,7 @@ class _TimingCircleState extends State<TimingCircle> {
       });
     }
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Stack(
           children: <Widget>[
@@ -126,7 +123,10 @@ class _TimingCircleState extends State<TimingCircle> {
           Container(child: CenterText(_getTimingFormatted(), size:60), width: widget._size, height: widget._size),
           ],
         ),
-        button
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: button,
+        )
       ],
     );
 

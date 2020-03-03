@@ -7,7 +7,7 @@ class PromodoroScreen extends StatelessWidget{
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        TimingCircle(timeInMinutes: 1,)
+        TimingCircle()
       ],
     );
   }
